@@ -10,7 +10,7 @@ class WelcomeUserController extends Controller
 		
 		$name = ucfirst($name);
 
-		return view('welcomeUser', [
+		return view('welcomeUser.index', [
 			'name' => $name,
 			'nickname' => $nickname
 		]);

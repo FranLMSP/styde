@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Listado de usuarios</title>
-	<meta charset="utf-8">
-</head>
-<body>
+@extends('layouts.index')
+
+@section('content')
+
+
 	<h1>{{ $title }}</h1>
 
 	<hr>
@@ -18,5 +16,13 @@
 	@else
 		<ul>No hay usuarios registrados</ul>
 	@endif
-</body>
-</html>
+
+
+@endsection
+
+@section('sidebar')
+
+	@parent
+
+	<h3>Barra lateral sobreescrita</h3>
+@endsection
