@@ -26,4 +26,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /*
+        For example:
+        If the field is boolean, the database will be tinyint(1)
+        And we can cast it to a boolean type
+    */
+    protected $casts = [
+        'is_admin' => 'boolean'
+    ];
+
+    public static function findByEmail($email)
+    {
+        return static::where(['email'=>$email])->first();
+    }
+
+    public function profession()
+    {
+        return $this->belongsTo(Profession::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->email === 'francoacg1@gmail.com';
+    }
 }

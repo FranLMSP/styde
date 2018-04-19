@@ -14,13 +14,8 @@ class Profession extends Model
 		'title'
 	];
 
-
-	/*
-		For example:
-		If the field is boolean, the database will be tinyint(1)
-		And we can cast it to a boolean type
-	*/
-	protected $casts = [
-		'title' => 'string'
-	];
+	public function users()
+	{
+		return $this->hasMany(User::class);
+	}
 }
