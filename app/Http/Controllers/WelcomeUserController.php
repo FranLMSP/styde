@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 class WelcomeUserController extends Controller
 {
     public function __invoke($name, $nickname = NULL) {
+		
 		$name = ucfirst($name);
 
-		if ($nickname) {
-			return "Bienvenido {$name}, tu apodo es {$nickname}";
-		} else {
-			return "Bienvenido {$name}";
-		}
+		return view('welcomeUser', [
+			'name' => $name,
+			'nickname' => $nickname
+		]);
     }
 }
