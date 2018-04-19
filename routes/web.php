@@ -26,10 +26,12 @@ Route::get('/usuarios/nuevo', function(){
 
 Route::get('/usuarios/{id}', function($id){
 	return "Mostrando detalle del usuario: {$id}";
-});
+})->where('id', '[0-9]+');
 
 // ? = optional parameter
 Route::get('/saludo/{name}/{nickmane?}', function($name, $nickname = NULL){
+	$name = ucfirst($name);
+
 	if ($nickname) {
 		return "Bienvenido {$name}, tu apodo es {$nickname}";
 	} else {
