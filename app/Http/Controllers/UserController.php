@@ -17,26 +17,10 @@ class UserController extends Controller
             ->with('title', 'Listado de usuarios');
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        $title = 'Mostrar un usuario';
-     
-        /*
-        $user = User::find($id);
-
-        
-        if (!$user) {
-            return response()->view('errors.404', [
-                'title' => $title
-            ], 404);
-        }
-        */
-
-        //This is the same than the previous
-        $user = User::findOrFail($id);
-
         return view('users.show', [
-            'title' => $title,
+            'title' => 'Mostrar un usuario',
             'user' => $user
         ]);
     }
