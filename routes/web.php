@@ -38,5 +38,9 @@ Route::put('/usuarios/{user}', 'UserController@update')
 Route::post('/usuarios', 'UserController@store')
 	->name('users.store');
 
+Route::delete('/usuarios/{user}', 'UserController@destroy')
+	->where('user', '[0-9]+')
+	->name('users.delete');
+
 // ? = optional parameter
 Route::get('/saludo/{name}/{nickmane?}', 'WelcomeUserController'); //This will call "__invoke" automatically
