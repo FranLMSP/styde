@@ -6,6 +6,9 @@
 
 	<hr>
 
-	<p>Mostrando detalle del usuario: {{ $id }}</p>
+	<p>Mostrando detalle del usuario: {{ $user->id }}</p>
+
+	<p>Nombre: {{ $user->name }}</p>
+	<p>Correo: {{ $user->email }}</p>
 
 @endsection
