@@ -31,6 +31,10 @@ Route::get('/usuarios/{user}/editar', 'UserController@edit')
 	->where('user', '[0-9]+')
 	->name('users.edit');
 
+Route::put('/usuarios/{user}', 'UserController@update')
+	->where('user', '[0-9]+')
+	->name('users.update');
+
 Route::post('/usuarios', 'UserController@store')
 	->name('users.store');
 
