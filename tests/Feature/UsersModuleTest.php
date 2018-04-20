@@ -72,6 +72,20 @@ class UsersModuleTest extends TestCase
     }
 
     /** @test */
+    function loads_edit_user_page()
+    {
+        $user = factory(User::class)->create();
+
+        $this->get("/usuarios/{$user->id}/editar")
+            ->assertStatus(200)
+            ->assertViewIs('users.edit')
+            ->assertSee('Editar usuario #'.$user->id)
+            ->assertViewHas('user', function($viewUser) use($user){
+                return $viewUser->id == $user->id;
+            });
+    }
+
+    /** @test */
     function shows_404_error_if_user_doesnt_exist()
     {
         $this->get('/usuarios/999')
