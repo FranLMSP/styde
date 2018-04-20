@@ -71,10 +71,39 @@ class UsersModuleTest extends TestCase
             ->assertSee('Crear nuevo usuario');
     }
 
+    /** @test */
     function shows_404_error_if_user_doesnt_exist()
     {
         $this->get('/usuarios/999')
             ->assertStatus(404)
             ->assertSee('No encontrado');
+    }
+
+    /** @test */
+    function it_creates_new_user()
+    {
+
+        $this->post('/usuarios',[
+            'name' => 'Prueba',
+            'email' => 'a@a.com',
+            'password' => '123456'
+        ])->assertRedirect('/usuarios');
+
+        //This won't work
+        /*
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Prueba',
+            'email' => 'a@a.com',
+            'password' => bcrypt('123456')
+        ]);
+
+        */
+
+        $this->assertCredentials([
+            'name' => 'Prueba',
+            'email' => 'a@a.com',
+            'password' => '123456'
+        ]);
     }
 }
