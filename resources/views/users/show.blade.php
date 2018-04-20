@@ -13,6 +13,7 @@
 
 	<p>
 		<a href="{{ url('usuarios/') }}">Regresar</a>
+
 	</p>
 
 @endsection

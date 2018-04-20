@@ -40,7 +40,7 @@ Route::post('/usuarios', 'UserController@store')
 
 Route::delete('/usuarios/{user}', 'UserController@destroy')
 	->where('user', '[0-9]+')
-	->name('users.delete');
+	->name('users.destroy');
 
 // ? = optional parameter
 Route::get('/saludo/{name}/{nickmane?}', 'WelcomeUserController'); //This will call "__invoke" automatically
