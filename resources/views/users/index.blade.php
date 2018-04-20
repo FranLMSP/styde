@@ -9,7 +9,8 @@
 	@if (count($users) > 0)
 		<ul>
 			@foreach($users as $user)
-				<li>{{ $user->name }}</li>
+				<li>{{ $user->name }}, <a href="{{ route('users.show', ['id' => $user->id] ) }}">({{ $user->email }})</a></li>
+				<a href="{{ action('UserController@show', ['id' => $user->id]) }}">Ver detalles</a>
 			@endforeach
 		</ul>
 	@else

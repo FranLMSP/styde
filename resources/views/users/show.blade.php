@@ -11,4 +11,8 @@
 	<p>Nombre: {{ $user->name }}</p>
 	<p>Correo: {{ $user->email }}</p>
 
+	<p>
+		<a href="{{ url('usuarios/') }}">Regresar</a>
+	</p>
+
 @endsection
