@@ -2,6 +2,13 @@
 
 @section('content')
 
-	<h1>{{ $title }}</h1>
+	<h1>Crear nuevo usuario</h1>
+
+
+	<form method="POST" action="{{ route('users.store') }}">
+		{!! csrf_field() !!}
+
+		<button>Crear</button>
+	</form>
 
 @endsection

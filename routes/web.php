@@ -27,5 +27,8 @@ Route::get('/usuarios/{user}', 'UserController@show')
 Route::get('/usuarios/nuevo', 'UserController@create')
     ->name('users.create');
 
+Route::post('/usuarios', 'UserController@store')
+	->name('users.store');
+
 // ? = optional parameter
 Route::get('/saludo/{name}/{nickmane?}', 'WelcomeUserController'); //This will call "__invoke" automatically
