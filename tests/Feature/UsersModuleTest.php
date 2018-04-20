@@ -118,12 +118,120 @@ class UsersModuleTest extends TestCase
                 'password' => '123456'
             ])
             ->assertRedirect('/usuarios/nuevo')
-            ->assertSessionHasErrors([
-                'name' => 'El campo nombre es obligatorio'
-            ]);
+            ->assertSessionHasErrors(['name']);
         
         $this->assertDatabaseMissing('users', [
             'email' => 'b@b.com'
+        ]);
+    }
+
+    /** @test */
+    function the_email_field_is_required()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->from('/usuarios/nuevo')
+            ->post('/usuarios',[
+                'name' => 'Test',
+                'email' => '',
+                'password' => '123456'
+            ])
+            ->assertRedirect('/usuarios/nuevo')
+            ->assertSessionHasErrors([
+                'email' => 'El campo email es obligatorio'
+            ]);
+        
+        $this->assertDatabaseMissing('users', [
+            'name' => 'Test'
+        ]);
+    }
+
+    /** @test */
+    function the_email_field_must_be_valid()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->from('/usuarios/nuevo')
+            ->post('/usuarios',[
+                'name' => 'Test',
+                'email' => 'correo-no-valido',
+                'password' => '123456'
+            ])
+            ->assertRedirect('/usuarios/nuevo')
+            ->assertSessionHasErrors([
+                'email' => 'El campo email no es válido'
+            ]);
+        
+        $this->assertDatabaseMissing('users', [
+            'name' => 'Test'
+        ]);
+    }
+
+    /** @test */
+    function the_email_field_must_be_unique()
+    {
+        //$this->withoutExceptionHandling();
+
+        factory(User::class)->create([
+            'name' => 'Used',
+            'email' => 'used@email.com',
+            'password' => bcrypt('123456')
+        ]);
+
+        $this->from('/usuarios/nuevo')
+            ->post('/usuarios',[
+                'name' => 'Test',
+                'email' => 'used@email.com',
+                'password' => '123456'
+            ])
+            ->assertRedirect('/usuarios/nuevo')
+            ->assertSessionHasErrors([
+                'email' => 'El email ya está en uso'
+            ]);
+        
+        //Only the user created with the factory must be counted
+        //Not two or more
+        $this->assertEquals(1, User::count());
+    }
+
+    /** @test */
+    function the_password_field_is_required()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->from('/usuarios/nuevo')
+            ->post('/usuarios',[
+                'name' => 'Test',
+                'email' => 'c@c.com'
+            ])
+            ->assertRedirect('/usuarios/nuevo')
+            ->assertSessionHasErrors([
+                'password' => 'El campo password es obligatorio'
+            ]);
+        
+        $this->assertDatabaseMissing('users', [
+            'email' => 'c@c.com'
+        ]);
+    }
+
+    /** @test */
+    function the_password_field_must_have_six_chars_min()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->from('/usuarios/nuevo')
+            ->post('/usuarios',[
+                'name' => 'Test',
+                'email' => 'c@c.com',
+                'password' => '123'
+            ])
+            ->assertRedirect('/usuarios/nuevo')
+            ->assertSessionHasErrors([
+                'password' => 'La contraseña debe tener al menos 6 caracteres'
+            ]);
+        
+        $this->assertDatabaseMissing('users', [
+            'email' => 'c@c.com'
         ]);
     }
 }
