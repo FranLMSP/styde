@@ -6,8 +6,7 @@
 	<h1>{{ $title }}</h1>
 
 	<hr>
-
-	@if (! empty($users))
+	@if (count($users) > 0)
 		<ul>
 			@foreach($users as $user)
 				<li>{{ $user->name }}</li>

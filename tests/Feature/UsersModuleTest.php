@@ -5,12 +5,27 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UsersModuleTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     function loads_users_page()
     {
+
+        factory(User::class)->create([
+            'name' => 'Franco'
+        ]);
+        factory(User::class)->create([
+            'name' => 'German'
+        ]);
+        factory(User::class)->create([
+            'name' => 'Yismeida'
+        ]);
+
         $this->get('/usuarios')
             ->assertStatus(200)
             ->assertSee('Listado de usuarios')
@@ -22,7 +37,7 @@ class UsersModuleTest extends TestCase
     /** @test */
     function loads_empty_users_page()
     {
-        $this->get('/usuarios?empty')
+        $this->get('/usuarios')
             ->assertStatus(200)
             ->assertSee('Listado de usuarios')
             ->assertSee('No hay usuarios registrados');
