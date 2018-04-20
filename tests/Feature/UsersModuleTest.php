@@ -353,13 +353,20 @@ class UsersModuleTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        self::markTestIncomplete();
-        return;
+        /*self::markTestIncomplete();
+        return;*/
 
-        factory(User::class)->create([
+
+
+        $randomUser = factory(User::class)->create([
             'name' => 'Used',
             'email' => 'used@email.com',
             'password' => bcrypt('123456')
+        ]);
+
+        $user = factory(User::class)->create([
+            'name' => 'Test',
+            'email' => 'test@test.com'
         ]);
 
         $this->from("/usuarios/{$user->id}/editar")
@@ -375,28 +382,56 @@ class UsersModuleTest extends TestCase
         
         //Only the user created with the factory must be counted
         //Not two or more
-        $this->assertEquals(1, User::count());
+        $this->assertDatabaseMissing('users', [
+            'name' => 'Test',
+            'email' => 'used@email.com'
+        ]);
+
     }
 
     /** @test */
-    function the_password_field_is_required_on_updating()
+    function the_email_stay_on_updating()
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'email' => 's@s.com'
+        ]);
 
         $this->from("/usuarios/{$user->id}/editar")
             ->put("/usuarios/{$user->id}", [
                 'name' => 'Test',
-                'email' => 'c@c.com'
+                'email' => 's@s.com',
+                'password' => '123456'
             ])
-            ->assertRedirect("/usuarios/{$user->id}/editar")
-            ->assertSessionHasErrors([
-                'password' => 'El campo password es obligatorio'
-            ]);
+            ->assertRedirect("/usuarios/{$user->id}");
         
-        $this->assertDatabaseMissing('users', [
-            'email' => 'c@c.com'
+        $this->assertDatabaseHas('users', [
+            'name' => 'Test',
+            'email' => 's@s.com'
+        ]);
+    }
+
+    /** @test */
+    function the_password_field_is_optional_on_updating()
+    {
+        //$this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create([
+            'password' => bcrypt('clave_anterior')
+        ]);
+
+        $this->from("/usuarios/{$user->id}/editar")
+            ->put("/usuarios/{$user->id}", [
+                'name' => 'Test',
+                'email' => 'c@c.com',
+                'password' => ''
+            ])
+            ->assertRedirect("/usuarios/{$user->id}");
+        
+        $this->assertCredentials([
+            'email' => 'c@c.com',
+            'password' => 'clave_anterior'
         ]);
     }
 

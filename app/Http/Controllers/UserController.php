@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -65,22 +66,33 @@ class UserController extends Controller
     public function update(User $user)
     {
 
+
         $data = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6'
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id)
+            ],
+             //'required|email|unique:users,email,'.$user->id, //this method is valid too
+            'password' => 'nullable|min:6'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
 
             'email.required' => 'El campo email es obligatorio',
             'email.email' => 'El campo email no es válido',
             'email.unique' => 'El email ya está en uso',
+            
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres',
 
-            'password.required' => 'El campo password es obligatorio',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres'
         ]);
 
-        $data['password'] = bcrypt($data['password']);
+        if ( $data['password'] ) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
 
         $user->update($data);
 
