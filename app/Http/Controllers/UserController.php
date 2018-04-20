@@ -20,9 +20,16 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $title = 'Mostrar un usuario';
+
+        if (!$user) {
+            return response()->view('errors.404', [
+                'title' => $title
+            ], 404);
+        }
 
         return view('users.show', [
-            'title' => 'Mostrar un usuario',
+            'title' => $title,
             'user' => $user
         ]);
     }
