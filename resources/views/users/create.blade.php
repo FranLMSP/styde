@@ -13,7 +13,7 @@
 		<br>
 
 		<label for="email">Email:</label>
-		<input type="email" name="email" id="email" placeholder="franco@example.com">
+		<input type="email" name="email" id="email" placeholder="franco&#64;example.com">
 		<br>
 
 		<label for="password">Password:</label>
